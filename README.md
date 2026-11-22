@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero.png" alt="AntigravityZH for Mac" width="100%" />
+  <img src="assets/cover-v2.png" alt="AntigravityZH for Mac" width="836" />
 </p>
 
 <h1 align="center">AntigravityZH for Mac</h1>
@@ -55,7 +55,7 @@
 ## 为什么图标是倒过来的？
 
 <p align="center">
-  <img src="assets/comic-1.png" alt="第一话：反了你了" width="78%" />
+  <img src="assets/comic-ep1.png" alt="第一话：反了你了" width="600" />
 </p>
 
 <br />
@@ -79,7 +79,7 @@
 ## 番外 · 一键中文之后
 
 <p align="center">
-  <img src="assets/comic-2.png" alt="第二话：一键中文之后" width="78%" />
+  <img src="assets/comic-ep2.png" alt="第二话：一键中文之后" width="600" />
 </p>
 
 <br />
@@ -92,7 +92,7 @@
 <br />
 
 <p align="center">
-  <img src="assets/outro.png" alt="AntigravityZH for Mac" width="76%" />
+  <img src="assets/outro.png" alt="AntigravityZH for Mac" width="720" />
 </p>
 
 <p align="center">
