@@ -5,7 +5,7 @@
 <h1 align="center">AntigravityZH for Mac</h1>
 
 <p align="center">
-  <strong>「反了你了」—— Google Antigravity 原生 macOS 一键中文助手</strong>
+  <strong>「反了你了」—— Mac 反重力汉化 · Google Antigravity 原生 macOS 一键中文助手</strong>
 </p>
 
 <p align="center">
@@ -45,7 +45,7 @@
 
 ## 主要特性
 
-- **不改动官方原版**：默认创建独立应用 `~/Applications/Antigravity 中文.app`，官方客户端与签名原样保留；也支持在设置中切换为「直接替换」。
+- **不改动官方原版**：默认创建独立应用 `~/Applications/AntigravityZH.app`，官方客户端与签名原样保留；也支持在设置中切换为「直接替换」。
 - **自动检测与定位**：启动即识别官方版本、运行状态与词典更新，支持 Spotlight 自动查找与手动更改应用位置。
 - **完整回退与卸载**：一键还原英文原版、移至废纸篓卸载中文版，或彻底清理全部备份与缓存。
 - **7,298 条本地词典**：覆盖界面、菜单、右键菜单、对话框与加载画面，纯本地运行，不读取账号与网络请求。

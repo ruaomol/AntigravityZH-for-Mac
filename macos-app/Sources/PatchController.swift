@@ -672,6 +672,7 @@ final class PatchController: ObservableObject {
         env["PATH"] = extraPaths + (env["PATH"].map { ":\($0)" } ?? "")
         env["PYTHONIOENCODING"] = "utf-8"
         env["PYTHONUNBUFFERED"] = "1"
+        env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc.environment = env
 
         let pipe = Pipe()
@@ -769,7 +770,7 @@ final class PatchController: ObservableObject {
     }
 
     private func mapInstallProgress(_ line: String) {
-        if line.contains("已创建独立汉化副本") {
+        if line.contains("已创建独立") && line.contains("副本") {
             activateStage(1, targetProgress: 0.30, ceiling: 0.44)
         } else if line.contains("使用 app.asar:") || line.contains("词典词条:") || line.contains("原包 unpacked") {
             activateStage(1, targetProgress: max(progress, 0.34), ceiling: 0.48)
@@ -791,7 +792,7 @@ final class PatchController: ObservableObject {
             activateStage(4, targetProgress: max(progress, 0.92), ceiling: 0.98)
         } else if line.contains("冒烟测试") {
             activateStage(4, targetProgress: max(progress, 0.94), ceiling: 0.98)
-        } else if line.contains("[DONE]") || line.contains("当前已是最新汉化") {
+        } else if line.contains("[DONE]") || line.contains("当前已是最新") {
             completeAllStages()
         }
     }
@@ -874,7 +875,7 @@ final class PatchController: ObservableObject {
             switch kind {
             case .smartInstallAndLaunch:
                 detail = targetMode == .copyApp
-                    ? "已在 ~/Applications/Antigravity 中文.app 部署完成并启动。"
+                    ? "已在 ~/Applications/AntigravityZH.app 部署完成并启动。"
                     : "已完成中文注入并启动 Antigravity。"
             case .reinject:
                 detail = "最新词典（\(snapshot.dictionaryCount) 条）与运行时补丁已重新写入。"
@@ -985,7 +986,7 @@ final class PatchController: ObservableObject {
 
     nonisolated private static func resolveOfficialAppPath(customPath: String) -> String {
         let fm = FileManager.default
-        let copyStd = URL(fileURLWithPath: (NSHomeDirectory() as NSString).appendingPathComponent("Applications/Antigravity 中文.app")).standardizedFileURL.path
+        let copyStd = URL(fileURLWithPath: (NSHomeDirectory() as NSString).appendingPathComponent("Applications/AntigravityZH.app")).standardizedFileURL.path
 
         func isValidAntigravityBundle(_ path: String) -> Bool {
             guard !path.isEmpty else { return false }
@@ -1069,8 +1070,8 @@ final class PatchController: ObservableObject {
             }
         }
 
-        // 3. Localized Copy (~/Applications/Antigravity 中文.app)
-        let copyPath = (NSHomeDirectory() as NSString).appendingPathComponent("Applications/Antigravity 中文.app")
+        // 3. Localized Copy (~/Applications/AntigravityZH.app)
+        let copyPath = (NSHomeDirectory() as NSString).appendingPathComponent("Applications/AntigravityZH.app")
         snap.copyPath = copyPath
         if fm.fileExists(atPath: copyPath) {
             snap.copyExists = true

@@ -72,7 +72,7 @@ struct AppSnapshot: Equatable, Sendable {
 
     var copyExists: Bool = false
     var copyVersion: String = ""
-    var copyPath: String = (NSHomeDirectory() as NSString).appendingPathComponent("Applications/Antigravity 中文.app")
+    var copyPath: String = (NSHomeDirectory() as NSString).appendingPathComponent("Applications/AntigravityZH.app")
     var copyRunning: Bool = false
     var copyPatched: Bool = false
     var copyMatchesOfficial: Bool = false

@@ -81,7 +81,7 @@ LEGACY_STARTUP_DIR = os.path.join(os.environ.get("APPDATA", os.path.expanduser("
 LEGACY_STARTUP_FILE = os.path.join(LEGACY_STARTUP_DIR, "AntigravityZhAutoRepair.bat")
 
 _LOG_PATH = None
-MACOS_COPY_APP = os.path.expanduser("~/Applications/Antigravity 中文.app")
+MACOS_COPY_APP = os.path.expanduser("~/Applications/AntigravityZH.app")
 MACOS_COPY_META = os.path.join(USER_DIR, "macos-copy.json")
 
 
@@ -93,13 +93,31 @@ def toolkit_version():
         return TOOLKIT_VERSION
 
 
+def meme_log_text(message):
+    """Keep installer logs playful while preserving real file names and commands."""
+    text = str(message)
+    protected = {
+        "汉化并启动.bat": "__HAJIMI_LAUNCH_BAT__",
+        "安装汉化插件.bat": "__HAJIMI_INSTALL_BAT__",
+        "Antigravity 汉化版.lnk": "__HAJIMI_SHORTCUT_LNK__",
+        "Antigravity 汉化版": "__HAJIMI_SHORTCUT_LABEL__",
+    }
+    for original, marker in protected.items():
+        text = text.replace(original, marker)
+    text = text.replace("汉化", "哈吉米南北绿豆")
+    text = text.replace("中文", "哈吉米吉米吉")
+    for original, marker in protected.items():
+        text = text.replace(marker, original)
+    return text
+
+
 def setup_log():
     global _LOG_PATH
     try:
         os.makedirs(LOG_DIR, exist_ok=True)
         _LOG_PATH = os.path.join(LOG_DIR, "install-%s.log" % time.strftime("%Y%m%d-%H%M%S"))
         with open(_LOG_PATH, "w", encoding="utf-8") as f:
-            f.write("Antigravity 汉化安装器 v%s\n" % toolkit_version())
+            f.write(meme_log_text("Antigravity 汉化安装器 v%s" % toolkit_version()) + "\n")
             f.write("time: %s\nplatform: %s\npython: %s\n\n" % (
                 time.strftime("%Y-%m-%d %H:%M:%S"), sys.platform, sys.version.replace("\n", " ")))
     except Exception:
@@ -107,11 +125,12 @@ def setup_log():
 
 
 def say(msg=""):
+    msg = meme_log_text(msg)
     print(msg, flush=True)
     if _LOG_PATH:
         try:
             with open(_LOG_PATH, "a", encoding="utf-8") as f:
-                f.write(str(msg) + "\n")
+                f.write(msg + "\n")
         except Exception:
             pass
 
@@ -204,7 +223,7 @@ def prepare_macos_copy(source=None):
     """Create or refresh a user-owned signed copy, leaving the official app intact."""
     if sys.platform != "darwin":
         return None
-    source = source or "/Applications/Antigravity.app"
+    source = os.path.abspath(os.path.expanduser(source or "/Applications/Antigravity.app"))
     if not os.path.isdir(source):
         die("未找到 %s，无法创建 macOS 汉化副本。" % source)
     if is_app_running(source):
@@ -223,8 +242,10 @@ def prepare_macos_copy(source=None):
             import plistlib
             with open(info, "rb") as f:
                 plist = plistlib.load(f)
-            plist["CFBundleDisplayName"] = "Antigravity 中文"
-            plist["CFBundleName"] = "Antigravity 中文"
+            plist["CFBundleDisplayName"] = "AntigravityZH"
+            # Keep the internal bundle name unchanged. Electron derives the
+            # nested Helper.app name from CFBundleName.
+            plist["CFBundleName"] = "Antigravity"
             with open(info, "wb") as f:
                 plistlib.dump(plist, f, fmt=plistlib.FMT_XML, sort_keys=False)
         except Exception as e:
@@ -320,7 +341,18 @@ def start_app(exe):
         return False
     try:
         if sys.platform == "darwin":
-            subprocess.Popen(["open", "-a", exe], close_fds=True)
+            # `open -a` resolves by bundle identifier. The official app and
+            # the localized copy intentionally share that identifier, so
+            # LaunchServices can silently open the wrong bundle. Execute the
+            # requested bundle binary directly instead.
+            binary = exe
+            if exe.endswith(".app"):
+                binary = os.path.join(exe, "Contents", "MacOS", "Antigravity")
+            env = os.environ.copy()
+            for k in ("ELECTRON_RUN_AS_NODE", "NODE_USE_ENV_PROXY", "ELECTRON_NO_ATTACH_CONSOLE"):
+                env.pop(k, None)
+            subprocess.Popen([binary], env=env, close_fds=True,
+                             stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             return True
         env = os.environ.copy()
         for k in ("ELECTRON_RUN_AS_NODE", "NODE_USE_ENV_PROXY", "ELECTRON_NO_ATTACH_CONSOLE"):
@@ -1642,7 +1674,7 @@ def cmd_remove_task(args):
 # ---------------------------------------------------------------- 智能模式
 def cmd_auto(args, silent=False):
     if sys.platform == "darwin" and args.copy_app:
-        source = getattr(args, "source_app", None) or "/Applications/Antigravity.app"
+        source = os.path.abspath(os.path.expanduser(getattr(args, "source_app", None) or "/Applications/Antigravity.app"))
         source_identity = macos_source_fingerprint(source)
         saved_identity = None
         try:
@@ -1753,8 +1785,8 @@ def main():
     ap.add_argument("--remove-task", action="store_true", help="取消登录时自动修复")
     ap.add_argument("--create-shortcut", action="store_true", help="创建「Antigravity 汉化版」桌面快捷方式")
     ap.add_argument("--asar", default=None, help="手动指定 app.asar 路径")
+    ap.add_argument("--copy-app", action="store_true", help="macOS 创建/使用 ~/Applications/AntigravityZH.app 副本")
     ap.add_argument("--source-app", default=None, help="macOS 指定官方 Antigravity.app 路径")
-    ap.add_argument("--copy-app", action="store_true", help="macOS 创建/使用 ~/Applications/Antigravity 中文.app 副本")
     ap.add_argument("--in-place", action="store_true", help="macOS 明确要求原位修改 /Applications/Antigravity.app")
     ap.add_argument("--version", action="store_true", help="显示版本")
     args = ap.parse_args()

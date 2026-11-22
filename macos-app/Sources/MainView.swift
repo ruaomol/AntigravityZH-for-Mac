@@ -176,7 +176,7 @@ struct MainView: View {
             }
             Button("取消", role: .cancel) {}
         } message: {
-            Text("将把 ~/Applications/Antigravity 中文.app 移至废纸篓，官方原版与个人数据不受影响。")
+            Text("将把 ~/Applications/AntigravityZH.app 移至废纸篓，官方原版与个人数据不受影响。")
         }
         .alert("完全清理数据与缓存？", isPresented: $controller.showFullResetConfirmation) {
             Button("完全清理", role: .destructive) {

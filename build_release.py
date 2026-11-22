@@ -135,7 +135,7 @@ MAC_USAGE_TXT = r"""Antigravity macOS 中文包 v{version}
 ----
 1. 确保 /Applications/Antigravity.app 已安装，并先正常退出客户端。
 2. 执行 ./install-macos.sh。
-3. 默认生成 ~/Applications/Antigravity 中文.app，不修改官方应用。
+3. 默认生成 ~/Applications/AntigravityZH.app，不修改官方应用。
 4. 安装器会保留 377 个 app.asar.unpacked 文件，同步 ElectronAsarIntegrity，
    保留原始顶层 entitlements，做本机临时签名和启动检查。
 
