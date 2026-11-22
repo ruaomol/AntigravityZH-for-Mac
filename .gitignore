@@ -1,0 +1,11 @@
+# macOS & Python
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local build artifacts (distributed via GitHub Releases)
+AntigravityZH.app/
+dist/
+
+# Local raw working copies (curated under assets/)
+fanle*.png
