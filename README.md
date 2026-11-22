@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/cover-v2.png" alt="AntigravityZH for Mac" width="836" />
+  <img src="assets/banner-top.png" alt="AntigravityZH for Mac" width="836" />
 </p>
 
 <h1 align="center">AntigravityZH for Mac</h1>
@@ -92,7 +92,7 @@
 <br />
 
 <p align="center">
-  <img src="assets/outro.png" alt="AntigravityZH for Mac" width="720" />
+  <img src="assets/banner-thanks.png" alt="AntigravityZH for Mac 致谢" width="760" />
 </p>
 
 <p align="center">
